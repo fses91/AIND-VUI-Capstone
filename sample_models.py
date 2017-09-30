@@ -146,13 +146,15 @@ def final_model(input_dim, filters, kernel_size, conv_stride,
                      padding=conv_border_mode,
                      activation='relu',
                      name='conv1d')(input_data)
-    #conv_2d = Conv1D(filters, kernel_size, 
-    #                 strides=conv_stride, 
-    #                 padding=conv_border_mode,
-    #                 activation='relu',
-    #                 name='conv2d')(conv_1d)
     # Add batch normalization
     bn_cnn = BatchNormalization(name='bn_conv_1d')(conv_1d)
+    conv_2d = Conv1D(filters, kernel_size, 
+                     strides=conv_stride, 
+                     padding=conv_border_mode,
+                     activation='relu',
+                     name='conv2d')(bn_cnn)
+    # Add batch normalization
+    bn_cnn = BatchNormalization(name='bn_conv_2d')(conv_2d)
     # Add a recurrent layer
     simp_rnn = LSTM(units, activation='relu',
                          return_sequences=True, implementation=2, name='rnn')(bn_cnn)
