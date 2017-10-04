@@ -149,9 +149,9 @@ def final_model(input_dim, filters, kernel_size, conv_stride,
     # Add batch normalization
     bn_cnn = BatchNormalization(name='bn_conv_1d')(conv_1d)
     
-    bidir_rnn1 = Bidirectional(LSTM(units, implementation=2, return_sequences=True, name='rnn'),
+    bidir_rnn1 = Bidirectional(LSTM(units, implementation=2, return_sequences=True, name='rnn', dropout=0.5, recurrent_dropout=0.5),
                               merge_mode='concat')(bn_cnn)
-    bidir_rnn2 = Bidirectional(LSTM(units, implementation=2, return_sequences=True, name='rnn'),
+    bidir_rnn2 = Bidirectional(LSTM(units, implementation=2, return_sequences=True, name='rnn', dropout=0.5, recurrent_dropout=0.5),
                               merge_mode='concat')(bidir_rnn1)
     # Add a TimeDistributed(Dense(output_dim)) layer
     time_dense = TimeDistributed(Dense(output_dim))(bidir_rnn2)
